@@ -206,14 +206,32 @@ include_directories(
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
-add_executable(position_control src/position_control.cpp)
 
-target_link_libraries(position_control
+add_executable(position_control_cpp src/position_control.cpp)
+
+target_link_libraries(position_control_cpp
   ${catkin_LIBRARIES}
-
-#catkin_package()
-#catkin_install_python(PROGRAMS
-#  src/position_control.py  # Path to your Python file
-#  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-#)
 )
+
+add_executable(tracking_controller_cpp src/tracking_controller.cpp)
+
+target_link_libraries(tracking_controller_cpp
+  ${catkin_LIBRARIES}
+)
+
+add_library(cpp_spline
+    src/BSpline.cpp
+    src/Curve.cpp
+    src/Vector.cpp
+)
+
+target_link_libraries(tracking_controller_cpp
+    cpp_spline
+    ${catkin_LIBRARIES}
+)
+#catkin_package()
+catkin_install_python(PROGRAMS
+  src/position_control.py  # Path to your Python file
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+
